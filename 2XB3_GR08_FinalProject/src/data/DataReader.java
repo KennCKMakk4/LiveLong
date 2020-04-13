@@ -43,7 +43,7 @@ public class DataReader {
 		if (!fileExists(file)) return null;
 		List<String[]> info = null;
 		try {
-			//opencsv-5.1.jar used here for writing as a CSV file
+			//opencsv-5.1.jar used here for reading a CSV file
 			CSVReaderHeaderAware reader = new CSVReaderHeaderAware(new FileReader(file));
 			info = reader.readAll();
 			reader.close();

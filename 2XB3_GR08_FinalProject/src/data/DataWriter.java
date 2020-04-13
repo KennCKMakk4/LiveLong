@@ -22,6 +22,7 @@ public class DataWriter {
 	public static void SaveNursingHomeInfo(List<NursingHome> lst) {
 		if (lst == null) return;
 		try {
+			//opencsv-5.1.jar used here for writing as a CSV file
 			CSVWriter writer = new CSVWriter(new FileWriter(
 					DataReader.fileNursingHomes));
 			writer.writeNext(NursingHome.getHeader());
