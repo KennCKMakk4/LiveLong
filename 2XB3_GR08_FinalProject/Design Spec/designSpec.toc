@@ -1,0 +1,55 @@
+\contentsline {section}{\numberline {1}Contributions}{5}%
+\contentsline {section}{\numberline {2}Executive Summary}{6}%
+\contentsline {section}{\numberline {3}Module and Class Overview}{7}%
+\contentsline {subsection}{\numberline {3.1}Module Decomposition}{7}%
+\contentsline {subsubsection}{\numberline {3.1.1}classes package}{7}%
+\contentsline {subsubsection}{\numberline {3.1.2}data package}{7}%
+\contentsline {subsubsection}{\numberline {3.1.3}app package}{8}%
+\contentsline {subsubsection}{\numberline {3.1.4}util package}{8}%
+\contentsline {subsubsection}{\numberline {3.1.5}Explanation}{10}%
+\contentsline {subsection}{\numberline {3.2}Classes Package Overview}{11}%
+\contentsline {subsubsection}{\numberline {3.2.1}NursingHome ADT}{11}%
+\contentsline {subsubsection}{\numberline {3.2.2}NHGeoInfo ADT}{11}%
+\contentsline {subsubsection}{\numberline {3.2.3}NHPair ADT}{12}%
+\contentsline {subsubsection}{\numberline {3.2.4}Deficiency ADT}{12}%
+\contentsline {subsubsection}{\numberline {3.2.5}FireSafetyDeficiency ADT}{13}%
+\contentsline {subsubsection}{\numberline {3.2.6}HealthDeficiency ADT}{13}%
+\contentsline {subsection}{\numberline {3.3}Data Package Overview}{14}%
+\contentsline {subsubsection}{\numberline {3.3.1}Database}{14}%
+\contentsline {subsubsection}{\numberline {3.3.2}DataReader}{15}%
+\contentsline {subsubsection}{\numberline {3.3.3}DataWriter}{15}%
+\contentsline {subsection}{\numberline {3.4}App Package Overview}{16}%
+\contentsline {subsubsection}{\numberline {3.4.1}LiveLong}{16}%
+\contentsline {subsubsection}{\numberline {3.4.2}State enum}{16}%
+\contentsline {subsubsection}{\numberline {3.4.3}Controller}{17}%
+\contentsline {subsubsection}{\numberline {3.4.4}TextParser}{18}%
+\contentsline {subsection}{\numberline {3.5}Util Package Overview}{19}%
+\contentsline {subsubsection}{\numberline {3.5.1}GoogleMapsUtils}{19}%
+\contentsline {subsubsection}{\numberline {3.5.2}OpenStreetMapUtils}{19}%
+\contentsline {subsubsection}{\numberline {3.5.3}QuickSort}{19}%
+\contentsline {subsubsection}{\numberline {3.5.4}SeparateChainingHashST}{20}%
+\contentsline {subsubsection}{\numberline {3.5.5}SequentialSearchST}{20}%
+\contentsline {section}{\numberline {4}View of the Uses relationship}{21}%
+\contentsline {section}{\numberline {5}Tracing Back to Requirements}{22}%
+\contentsline {section}{\numberline {6}Implementation Details}{23}%
+\contentsline {subsection}{\numberline {6.1}classes package}{23}%
+\contentsline {subsubsection}{\numberline {6.1.1}NursingHome.java}{23}%
+\contentsline {subsubsection}{\numberline {6.1.2}NHGeoInfo.java}{23}%
+\contentsline {subsubsection}{\numberline {6.1.3}NHPair.java}{23}%
+\contentsline {subsubsection}{\numberline {6.1.4}Deficiency.java}{24}%
+\contentsline {subsubsection}{\numberline {6.1.5}FireSafetyDeficiency and HealthDeficiency.java}{24}%
+\contentsline {subsection}{\numberline {6.2}data package}{25}%
+\contentsline {subsubsection}{\numberline {6.2.1}Database}{25}%
+\contentsline {subsubsection}{\numberline {6.2.2}DataReader}{27}%
+\contentsline {subsubsection}{\numberline {6.2.3}DataWriter}{27}%
+\contentsline {subsection}{\numberline {6.3}app package}{28}%
+\contentsline {subsection}{\numberline {6.4}LiveLong}{28}%
+\contentsline {subsubsection}{\numberline {6.4.1}Controller}{30}%
+\contentsline {subsubsection}{\numberline {6.4.2}TextParser}{31}%
+\contentsline {subsection}{\numberline {6.5}util package}{32}%
+\contentsline {subsubsection}{\numberline {6.5.1}GoogleMapUtils}{32}%
+\contentsline {subsubsection}{\numberline {6.5.2}OpenStreetMapUtils}{32}%
+\contentsline {subsubsection}{\numberline {6.5.3}QuickSort}{32}%
+\contentsline {subsubsection}{\numberline {6.5.4}SeparateChainingHashST}{32}%
+\contentsline {subsubsection}{\numberline {6.5.5}SequentialSearchST}{32}%
+\contentsline {section}{\numberline {7}Internal Review}{33}%

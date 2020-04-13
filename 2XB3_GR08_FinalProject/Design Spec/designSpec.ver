@@ -1,0 +1,26 @@
+\begin {longtable}{@{}ll>{\hsize =\vhAuthorColWidth }X>{\hsize =\vhChangeColWidth }X@{}}
+\textbf {\vhversionname }
+ & \textbf {\vhdatename }
+ & \textbf {\vhauthorname }
+ & \textbf {\vhchangename }\\[1ex]
+1.0
+ & 08.04.2020
+ & \listset {KM}
+ & Document created\\
+1.1
+ & 09.04.2020
+ & \listset {KM}
+ & Figures added\\
+1.2
+ & 09.04.2020
+ & \listset {KM}
+ & Description of implementation added, edits to figures\\
+1.3
+ & 11.04.2020
+ & \listset {KM}
+ & Added Internal Review of design, edits to phrasing in other areas\\
+1.4
+ & 12.04.2020
+ & \listset {KM}
+ & Document finalized\\
+\end {longtable}
