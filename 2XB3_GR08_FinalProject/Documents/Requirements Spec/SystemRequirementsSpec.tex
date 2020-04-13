@@ -1,0 +1,676 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage{paralist}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{hhline}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{url}
+
+\oddsidemargin 0mm
+\evensidemargin 0mm
+\textwidth 160mm
+\textheight 200mm
+\renewcommand\baselinestretch{1.0}
+
+\pagestyle {plain}
+\pagenumbering{arabic}
+
+\newcounter{stepnum}
+
+%% Comments
+
+\usepackage{color}
+
+
+\title{\textbf{LiveLong}\\System Requirements Specification}
+\author{COMPSCI 2XB3, L02, G08\\Kenneth Mak - 001318946}
+\date{March 8, 2020}
+
+\begin {document}
+
+\maketitle
+
+\newpage
+\tableofcontents
+
+\newpage
+\section{Domain}
+
+%Brief description of the application domain and of the goals you should fulfill by developing
+%an implementation. This includes a precise documentation of the domain knowledge that is relevant to derive
+%specifications: who are the stakeholders and what are their goals and expectations? What are the main entities
+%that characterize the domain? What are their main relationships? How are they affected by the system we will
+%develop?
+
+% who are the stakeholders and what are their goals and expectations?
+%What are the main entities that characterize the domain? 
+% What are their main relationships? 
+% How are they affected by the system we will develop?
+
+LiveLong is an application that provides a list of nursing homes to a client, ranked by their current rating conducted in surveys by the official U.S. government Medicare. The results displayed will change based on the client's location and their filter settings, such as setting the maximum distance or the minimum rating when searching. 
+\\ \\
+The final results will also include provide warnings of any previous case of staff abuse, and any official government warnings of Fire Safety or Health deficiencies given to the nursing home, including the date of assignment and the current status since then. 
+\\ \\
+The stakeholders of this application can then be assumed to be as follows:
+\begin{enumerate}
+\item Members of the general public who are searching for a nursing home.
+\item Doctors, nurses, or some other medical professional requiring a nursing home for a patient requiring long-term care.
+\item Staff or owners of the nursing home itself to view current ratings
+\item Government workers looking into the current deficiencies of a nursing home and its current status.
+\end{enumerate}
+Each of the stakeholders will in some way be affected by this application. Those searching for an appropriate nursing home within a certain distance will be able to quickly find a list of nursing homes for them to start researching on*, as well as have any noticeable concerns available for them to look at. It will greatly speed up the process of choosing a nursing home and give then choices that are officially backed by Medicare.
+\\ \\ 
+Staff or owners of a nursing home will be able to view their current appearance to the general public, and their ranking as compared to other nearby nursing homes. They will be able to see which areas require improvement and attention, and subsequently contact the government if certain deficiencies have been handled. 
+\\ \\
+Finally, official government workers will be able to search for specific Nursing Homes based on their ID or name, and check if the current status deficiencies that the nursing home still has**.
+\\ \\
+*As an emphasis, this application is intended to provide quick results based on a user's specific filter, and point out any general concerns. Additional research on a is highly recommended.
+\\ \\
+** Current status of deficiencies is updated monthly on the Medicare official databases.
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Functional Requirements}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{NursingHome ADT Module}
+
+\subsection*{Module}
+NursingHome
+\subsection*{Description}
+
+NursingHome ADT will store information about a nursing home. It is constructed using the data parsed with DataReader. Any warnings (i.e. Fire Safety or Health deficiencies) will also be stored in this object.
+
+
+\subsection* {Uses}
+
+FireSafetyDeficiency, HealthDeficiency
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+
+NursingHome = ?
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | l |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+NursingHome & $\textit{seq of String}$ & NursingHome & NoValidIdentifier\\
+\hline
+accessors & ~ & $relevant Type$ & ~\\
+\hline
+addFSDef & FireSafetyDeficiency & ~  & ~\\
+\hline
+addHDef & HealthDeficiency & ~  & ~\\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+\textit{id, name, contact information, address, ratings, flags, etc.}: $String/\mathbb{Z}/\mathbb{B}$\\
+$fsList$: \textit{seq of} FireSafetyDeficiency\\
+$hList$: \textit{seq of} HealthDeficiency
+
+\subsubsection* {State Invariant}
+
+None
+
+\subsubsection* {Access Routine Semantics}
+
+NursingHome($\textit{seq of String}$):
+\begin{itemize}
+\item transition: constructs a NursingHome from a sequence of Strings that has been split by a comma from the CSV.
+\item output: $out := $NursingHome
+\item exception: No value for NH.id $\rightarrow$ NoValidIdentifier
+\end{itemize}
+
+\noindent accessors():
+\begin{itemize}
+\item refers to all relevant accessor methods referring to any variable inside NursingHome (i.e. getID(), getName(), getAbuseFlag(), getFSList(), etc.)
+\end{itemize}
+
+\noindent addFSDef($\textit{fsd}$):
+\begin{itemize}
+\item transition: adds the FireSafetyDeficiency $fsd$ to this object's fsList
+\end{itemize}
+
+\noindent addHDef($\textit{hd}$):
+\begin{itemize}
+\item transition: adds the HealthDeficiency $hd$ to this object's hList
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  NHGeoInfo
+\newpage
+
+\subsection{NHGeoInfo ADT Module}
+
+\subsection*{Module}
+NHGeoInfo
+\subsection*{Description}
+
+NHGeoInfo ADT will store the geographical information about a nursing home. It is constructed using the data parsed with DataReader. It contains the longitude and latitude for a NursingHome object, if that NursingHome object and this have the same ID.
+
+
+\subsection* {Uses}
+
+FireSafetyDeficiency, HealthDeficiency
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+
+NursingHome = ?
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | l |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+NHGeoInfo & $\textit{seq of String}$ & NHGeoInfo & NoValidIdentifier\\
+\hline
+accessors & ~ & $relevant Type$ & ~\\
+\hline
+updateDistance & $\mathbb{Z}$, $\mathbb{Z}$ & ~  & ~\\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+\textit{id}: $String$\\
+\textit{lat}: $\mathbb{Z}$\\
+\textit{lon}: $\mathbb{Z}$\\
+\textit{dist}: $\mathbb{Z}$
+
+\subsubsection* {State Invariant}
+
+\textit{id} $:= null$
+
+
+\subsubsection* {Access Routine Semantics}
+
+NHGeoInfo($\textit{seq of String}$):
+\begin{itemize}
+\item transition: constructs a NHGeoInfo from a sequence of Strings that has been split by a comma from the CSV.
+\item output: $out := $ NHGeoInfo
+\item exception: No value for NH.id $\rightarrow$ NoValidIdentifier
+\end{itemize}
+
+\noindent accessors():
+\begin{itemize}
+\item refers to all relevant accessor methods referring to any variable inside NHGeoInfo (i.e. getID(), getLat(), getLon(), etc.)
+\end{itemize}
+
+\noindent updateDistance($\textit{latitude, longitude}$):
+\begin{itemize}
+\item transition: $dist := $ distance($latitude$, $longitude$)
+\end{itemize}
+
+\subsection*{Local Function}
+\noindent distance($lat2$, $lon2$) - Start connection to GoogleAPI maps. \\
+\noindent distance($lat2$, $lon2$) $ \equiv $ Calculate distance between $(lat, lon)$ with $lat2, lon2$
+
+%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+\subsection{Generic Deficiency Module}
+
+\subsection* {Generic Template Module}
+
+Deficiency
+
+\subsection* {Uses}
+
+None
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+
+Deficiency = ?
+
+\subsubsection* {Exported Constants}
+
+None
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | p{6cm} |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+Deficiency & \textit{seq of} String & Deficiency & NoValidIdentifier\\
+\hline
+accessors & ~ & $relevant Type$ & ~\\
+\hline
+isActive & ~ & $\mathbb{Z}$ & ~\\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+
+\textit{id, deficiency date,  category, description,  status}: $String$\\
+
+\subsubsection* {State Invariant}
+
+\textit{id} $:= null$
+
+\subsubsection* {Assumptions}
+\noindent Superclass of FireSafetyDeficiency and HealthDeficiency. Abstract, should ideally not be implemented on its own.
+
+\subsubsection* {Access Routine Semantics}
+Deficiency($\textit{seq of String}$):
+\begin{itemize}
+\item transition: constructs a Deficiency from a sequence of Strings that has been split by a comma from the CSV. Requires a value to be found for $id$ and $name$ in order to add this to the correct NursingHome.
+\item output: $out := $ Deficiency
+\item exception: No value for $id$ $\rightarrow$ NoValidIdentifier
+\end{itemize}
+
+\noindent accessors():
+\begin{itemize}
+\item refers to all relevant accessor methods referring to any variable inside NHGeoInfo (i.e. getID(), getStatus(),  etc.)
+\end{itemize}
+
+\noindent isActive():
+\begin{itemize}
+\item output: $out := $ ($status \neq \textit{Waiver has been granted}$  $ \land $ $\\
+status \neq \textit{Deficient, provider has date of correction})$
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%5
+\newpage
+
+\subsection{FireSafetyDeficiency ADT Module}
+\subsection* {ADT Module}
+FireSafetyDeficiency extends Deficiency
+
+\subsection{HealthDeficiency ADT Module}
+\subsection* {ADT Module}
+HealthDeficiency extends Deficiency
+
+
+%%%%%%%%%%%%%%%%%%%%%%  		DATAREADER
+\newpage
+
+\subsection{DataReader Module}
+
+\subsection*{Module}
+DataReader
+
+\subsection*{Description}
+
+This module is used for parsing csv files and returning the data to an appropriate location. The data that this module is intended to go through is the \textbf{Provider Information} dataset, the \textbf{Provider Geo Information} dataset, the \textbf{Fire Safety Deficiencies} dataset, and the \textbf{Health Deficiencies} dataset. 
+
+\subsection* {Uses}
+
+NursingHome, FireSafetyDeficiency, HealthDeficiency
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Constants}
+
+None
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | p{5cm} |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+readProviderInfo & s: $String$ & \textit{seq of} NursingHome & IOException\\
+\hline
+readProviderGeoInfo & s: $String$ & \textit{seq of} NHGeoInfo & IOException\\
+\hline
+readFSDeficiency & s: $String$ & \textit{seq of} FireSafetyDeficiency & IOException\\
+\hline
+readHDeficiency & s: $String$ & \textit{seq of} HealthDeficiency & IOException\\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+
+None
+
+\subsubsection* {State Invariant}
+
+None
+
+\subsubsection* {Access Routine Semantics}
+
+\noindent readProviderInfo($s$):
+\begin{itemize}
+\item Given a string $s$, find the file $s$ and attempt to parse through all rows. Construct a NursingHome object for each row, and place in a sequence. Upon completion, return the sequence. Sequence will be ordered later when inserting into binary tree.
+\item output: $out :=$ \textit{seq of} NursingHome
+\item exception: Unable to find file $\rightarrow$ IOException
+\end{itemize}
+
+\noindent readProviderGeoInfo($s$):
+\begin{itemize}
+\item Given a string $s$, find the file $s$ and attempt to parse through all rows. Construct a NHGeoInfo object for each row, and place in a sequence. Upon completion, return the sequence. Sequence will be ordered later when inserting into binary tree.
+\item output: $out :=$ \textit{seq of} NHGeoInfo
+\item exception: Unable to find file $\rightarrow$ IOException
+\end{itemize}
+
+\noindent readFSDeficiency($s$):
+\begin{itemize}
+\item Given a string $s$, find the file $s$ and attempt to parse through all rows. Construct a FireSafetyDeficiency object for each row, and place in a sequence. Upon completion, return the sequence. Deficiency sequence will later be parsed and added to its relevant Nursing Home.
+\item output: $out :=$ \textit{seq of} FireSafetyDeficiency
+\item exception: Unable to find file $\rightarrow$ IOException
+\end{itemize}
+
+\noindent readHDeficiency($s$):
+\begin{itemize}
+\item Given a string $s$, find the file $s$ and attempt to parse through all rows. Construct a HealthDeficiency object for each row, and place in a sequence. Upon completion, return the sequence. Deficiency sequence will later be parsed and added to its relevant Nursing Home.
+\item output: $out :=$ \textit{seq of} HealthDeficiency
+\item exception: Unable to find file $\rightarrow$ IOException
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%  		DataWriter
+\newpage
+
+\subsection{DataWriter Module}
+
+\subsection*{Module}
+DataWriter
+
+\subsection*{Description}
+
+This module is used for writing the objects \textbf{NursingHome}, \textbf{NHGeoInfo}, \textbf{FireSafetyDeficiency} and \textbf{HealthSafetyDeficiency} into csv files. This is done to create files that contain only the necessary data, therefore reducing the size of the storage and decreasing load times when initializing the app. 
+
+\subsection* {Uses}
+
+NursingHome, FireSafetyDeficiency, HealthDeficiency
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Constants}
+
+None
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | p{5cm} |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+saveProviderInfo & \textit{seq of} NursingHome &  CSV File & \\
+\hline
+saveProviderGeoInfo & \textit{seq of} NHGeoInfo &  CSV File & \\
+\hline
+saveFSDeficiency &  \textit{seq of} FireSafetyDeficiency &  CSV File & \\
+\hline
+saveHDeficiency & \textit{seq of} HealthDeficiency &  CSV File &  \\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {Access Routine Semantics}
+
+\noindent saveProviderInfo($s$):
+\begin{itemize}
+\item Given a sequence of NursingHome $s$, for each NursingHome object, write all of the object's variables into a CSV file, delimited by the `,' sign. 
+\item output: $out :=$ CSV File
+\item exception: None
+\end{itemize}
+
+\noindent saveProviderGeoInfo($s$):
+\begin{itemize}
+\item Given a sequence of NHGeoInfo $s$, for each NHGeoInfo object, write all of the object's variables into a CSV file, delimited by the `,' sign. 
+\item output: $out :=$ CSV File
+\item exception: None
+\end{itemize}
+
+\noindent saveFSDeficiency($s$):
+\begin{itemize}
+\item Given a sequence of FireSafetyDeficiency $s$, for each FireSafetyDeficiency object, write all of the object's variables into a CSV file, delimited by the `,' sign. 
+\item output: $out :=$ CSV File
+\item exception: None
+\end{itemize}
+
+\noindent saveHDeficiency($s$):
+\begin{itemize}
+\item Given a sequence of HealthDeficiency $s$, for each HealthDeficiency object, write all of the object's variables into a CSV file, delimited by the `,' sign. 
+\item output: $out :=$ CSV File
+\item exception: None
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+\newpage
+
+\subsection{Database Module}
+
+\subsection* {Static Module}
+
+Database is a class used to store all NursingHome and NHGeoInfo objects. NursingHome objects are stored in a Hash Symbol Table, and NHGeoInfo are kept inside a List object.
+
+\subsection*{Uses}
+NursingHome, NHGeoInfo, FireSafetyDeficiency, HealthDeficiency, DataReader
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | p{6cm} |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+Database & ~ & ~ & FailedInitialize\\
+\hline
+ChangeLocation & $String$ & ~ & ~\\
+\hline
+search & seq of $\mathbb{Z}$ and $\mathbb{B}$ & seq of NursingHome & ~\\
+\hline
+accessors & ~ & $RelevantType$ & ~\\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+\noindent $stNH := $ \textit{SequentialChainingHashST} of NursingHome \\
+\noindent $nhGeo := seq of $ NHGeoInfo
+\noindent $lat := \mathbb{Z}$
+\noindent $lon := \mathbb{Z}$
+
+\subsubsection* {Access Routine Semantics}
+\noindent Database():
+\begin{itemize}
+\item transition: Initializes the Database by reading through the relevant CSV files with DataReader. Construct sequence of NursingHome, NHGeoInfo, FireSafetyDeficiency and HealthSafetyDeficiency objects. Insert NursingHome objects into $stNH$. For each Deficiency object found, insert into the NursingHome in $stNH$ with the same ID. Insert NHGeoInfo objects into $nhGeo$, then do updateDistances() and sort($nhGeo$)
+\item exception: Any errors (I.e. IOException, memory, etc.) $\rightarrow$ FailedInitialize
+\end{itemize}
+
+\noindent ChangeLocation($s$):
+\begin{itemize}
+\item transition: $lat, lon := $geoCode($s$), and call updateDistances()
+\item exception: None
+\end{itemize}
+
+\noindent search($s$):
+\begin{itemize}
+\item output: $out := $ seq of NursingHome, with each NursingHome fulfilling the search criteria in $s$
+\item exception: None
+\end{itemize}
+
+\noindent accessors():
+\begin{itemize}
+\item refers to all relevant accessor methods referring to any the $lat$ and $lon$ variable inside Database (i.e. getLat(), getLon(),  etc.)
+\end{itemize}
+
+\subsection*{Local Functions}
+\noindent updateDistances(): \\
+\noindent updateDistances() $ \equiv $ $(\forall g : nhGeo | g.$calculateDistance$(lat, lon)$)
+
+\noindent geocode($s$): $String \rightarrow \mathbb{Z}, \mathbb{Z}$
+\noindent geocode($s$): $ \equiv $ Return the latitude and longitude of the given address $s$
+
+\noindent sort($seq$): $seq of $ NHGeoInfo
+\noindent sort($seq$): $ \equiv $ Sort the sequence $seq$ from lowest distance to highest distance with QuickSort
+
+%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Menu Module}
+
+\subsection* {Description}
+
+The module in which interactions between the client and the application is carried out. Provides visual feedback towards the client. Currently designed to be a basic command line program that will print out results based on the user's commands. Possible future implementations include providing UI in the forms of interactable menus with a connection to GoogleMaps API.
+
+\subsection*{Uses}
+Database
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | p{6cm} |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+Menu & ~ & ~ & FailedInitialize\\
+\hline
+readLine & $String$ & ~ & UnexpectedCommand\\
+\hline
+display & ~ & $String$ & ~\\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+\noindent $command := String$ \\
+\noindent $db := $Database \\
+\noindent $sLoc := String$ of user's location \\
+\noindent $S := \textit{seq of}$ NursingHome \\
+\noindent $state := \textit{enum state to show correct menu}$ \\
+
+\subsubsection* {Access Routine Semantics}
+\noindent Menu():
+\begin{itemize}
+\item transition: Initialize Database. Initialize $state$ to main menu screen.
+\item exception: Failed initialize $\rightarrow$ FailedInitialize
+\end{itemize}
+
+\noindent readLine($s$):
+\begin{itemize}
+\item transition: Read line $s$ from CLI value. $state := some other state$ \\ Switch state of interface based on input (I.e. Main Menu $\rightarrow$ Show results). Appropriate commands can extract information from database when needed.
+\item exception: Unhandled command given $\rightarrow$ UnexpectedCommand
+\end{itemize}
+
+
+\noindent display():
+\begin{itemize}
+\item transition: Given $state$ and $S$, display visual feedback to client. (I.e. main menu, selection options, list of nursing homes).
+\item exception: None
+\end{itemize}
+
+\subsection*{Local Functions}
+\noindent initializeMenu() - Ideally, a visual UI with buttons and search bar instead of a CLI is created.
+
+\noindent connectToMapAPI() - Start connection to GoogleAPI maps. \\
+\noindent displayMap($\textit{seq of }$NH) - display google map with NH addresses and your location to GoogleMaps API.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\section{Non-Functional Requirements}
+%These may be classified into the following categories: reliability (availability,
+%integrity, security, safety, etc.), accuracy of results, performance, human-computer interface issues, operating
+%constraints, physical constraints, portability issues, and others.
+
+%Reliability (availability, integrity, security, safety)
+\subsection{Reliability}
+$LiveLong$ should currently only fail at providing services if it fails to find the CSV file to pull information from. This can result because of a moved file, misnamed file, or a corrupted CSV file. Additionally, the dataset needs to be downloaded from the official government site at Medicare to be updated. As such, an option to directly link to the dataset online should be looked into to provide reliable data. Alternatively, the application can write the stored data in the Database to a internal csv to better store data and conserve space, while also promising that there is always a dataset that the application can initialize with.
+
+%Accuracy of Results
+\subsection{Accuracy of Results}
+Each search result should return results such that all nursing home that fulfills the criteria is included (up to a certain number, ranked based on distance or rating, decision pending), and that there are no nursing homes that violate the criteria is shown. Additionally, any warnings or deficiencies must be clear for the client to view (i.e. abuse warnings, health deficiencies). 
+\\ \\
+Results should be constant each time, such that a repeated search after another initialization of the application will yield the same results.
+%Performance
+\subsection{Performance}
+As $LiveLong$ is advertised as a quick application to return results for a client, it is important that the efficiency of the search algorithm can quickly find accurate results pertaining to the user location and the search filter. Additionally, the initialization of the database should be relative quick, no more than a minute in the worst case. This includes the reading of the CSV files, the parsing and creation of appropriate data types, and the insertion into the database. The $get()$ command is used multiple times when appending deficiencies to a Nursing Home, which can drastically increase the initialization times. 
+
+%human-computer interface issues
+\subsection{Human-Computer Interface Issues}
+Currently the interface uses a Command-Line-Interface, which is not accessible for the general public, nor is it easy to use. Ideally, the application should make the interface straightforward to use. \\ \\
+There are plans to eventually implement an interactable menu and use a visual map API to show the results. An interactable menu would making setting a search filter far more easy for a client to use, rather than manually typing out the filter in the command line.
+
+\subsection{Scalability}
+As this program is based off of a growing dataset that is being updated monthly, it is vital to ensure that the application can accept new changes or additions in the dataset, as well as being able to still run efficiently. Steps must be taken to ensure that new information can be added fluidly into the application (I.e. overwriting the previous dataset file, changed or reordered column names, etc.). \\ \\
+Additionally, the initialization of the Database and the subsequent search and filter methods should be able to run their commands in a very short amount of time. Ideas such as generating a compressed local CSV file containing only necessary information could speed up initialization times, and applications of more proven search and sort algorithms (I.e. QuickSort for sorting, or hash tables for Storing and Searching quickly) will ensure that even with the growth of the dataset, this application will still run fluidly.
+
+%operating constraints
+%physical constraints
+%portability issues
+\subsection{Other Constraints or Issues}
+$LiveLong$ should be able to function on multiple devices and operating systems with little change from each platform. As this application is built through Java, the only requirement for the platform is the ability to run Java applications. Thus, there should not be any platform-specific algorithms that would prevent it from running on another. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Requirements on Development and Maintenance Process}
+$LiveLong$ has several important goals it must fulfill when it is used, ranked in order of importance.
+\begin{enumerate}
+\item Accuracy: Results must always return the same results when given the same criteria. Information presented must be accurate based on the dataset provided.
+\item Speed \& Efficiency: $LiveLong$ must be able to run quickly despite the large amount of information it needs to parse during initialization. It must also be able to quickly return results to the client. 
+\item Usability: $LiveLong$ should be simple and straightforward for the client to use. The search filter should not be too confusing to set - this implies the implementation of a interactable UI.
+\end{enumerate}
+ %These include quality control procedures
+%(in particular, system test procedures), 
+%priorities of the required functions, 
+%likely changes to the system maintenance procedures, 
+%and other requirements.
+\subsection{Quality Control Procedures}
+$LiveLong$ will undergo several tests with each new implementation or version change.
+\begin{enumerate}
+\item Unit Testing - Each module will have its methods tested based on differing values of input, and whether the results are consistent with the expected behaviour. This will be ideally run with JUnit to test each module independently and to ensure that the smallest components of the application are implemented correctly.
+\item Integration Testing - Related modules will be tested together to ensure that the modules are integrated correctly. For example, ensuring the DataReader module correctly creates sequences of NursingHome ADT when parsing, and ensuring that the module correctly read the csv. The sequence can later be given to Database to test for insertion and searching algorithms.
+\item System Testing - The entirety of the application undergoes BlackBox testing methods to ensure that the application functions such that it meets the requirements, and that the application delivers the results it requires in an efficient and accurate manner. 
+\end{enumerate}
+Further tests will be done by non-programmers to gain feedback from expected stakeholders, such as feedback of the UI flow and usability, and any concerns or ideas that were not considered by the developers.
+
+\subsection{Priority of the Required Functions}
+\begin{enumerate}
+\item NursingHome: ADT to store information about a Nursing Home. Immutable, created only from DataReader. 
+\item NHGeoInfo: ADT to store geographical information about a Nursing Home. Immutable, created only from DataReader. 
+\item Deficiency, FireSafetyDeficiency, and HealthDeficiency: ADT to store information about deficiencies assigned to a NursingHome from the official government.
+\item DataReader: To accurately parse and construct the appropriate objects from a CSV file in a quick and efficient manner
+\item DataWriter: To correctly write an object's variables into a CSV file such that the same object can be constructed with said values
+\item Database: To correctly store homes in a sorted manner. To correctly search for and return a sequence nursing home fulfilling a search criteria. 
+\item Menu: To visually display the application in a way such that the UI delivers information to the client effectively, via maps and an interactable interface. Should be easily understandable for the client to start using.
+\end{enumerate}
+
+\subsection{Likely Changes in the Future}
+\begin{enumerate}
+\item Changes to how data is gathered, from a local CSV file to a direct connection to the Medicare site online
+\item Saving a `copy' of the database as a backup CSV file in the project files to ensure that there is a dataset present in initialization, and to reduce load times
+\item Changes to the Menu UI and how it should be constructed based on user feedback for UX.
+\item Implementing a connection to the GoogleMaps API to provide results in a clearer way
+\item Implementation on a different platform (I.e. Windows $\rightarrow$ iPhone)
+\end{enumerate}
+
+\subsection{Other Possible Requirements}
+Development of $LiveLong$ should follow proper versioning cycles to be able to follow the application's current progress rate, and whether any changes should be made to follow the deadline. 
+\\ \\
+Tests should be done in such a manner that all exceptions, edge cases, and deliberate fails (i.e. scenarios of sending `DROP\_TABLE', or abusing string concatenation, invalid text in the CSV file, corrupted files) is tested. Additionally, a final acceptance test phase should be done by programmers and non-programmers that do not include the developers themselves. This is to get their objective feedback on the current state of the application, and to catch any unlikely scenarios or interactions that the developers did not account for.
+
+
+
+
+\end {document}
